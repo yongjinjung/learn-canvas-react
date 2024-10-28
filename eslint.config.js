@@ -1,10 +1,17 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import react from 'eslint-plugin-react'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
+import js from '@eslint/js';
+import globals from 'globals';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default [
+  {
+    extends: [
+      'eslint:recommended',
+      'plugin:react/recommended',
+      'prettier', // prettier 설정을 추가하여 충돌을 방지
+    ],
+  },
   { ignores: ['dist'] },
   {
     files: ['**/*.{js,jsx}'],
@@ -35,4 +42,4 @@ export default [
       ],
     },
   },
-]
+];
