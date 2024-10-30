@@ -41,6 +41,7 @@ export default [
         { allowConstantExport: true },
       ],
       'react/self-closing-comp': 'warn',
+      'react/prop-types': 'off',
     },
   },
 ];
