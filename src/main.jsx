@@ -8,6 +8,7 @@ import About from './pages/About';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import ErrorPage from './pages/ErrorPage';
+import CanvasDetail from './pages/CanvasDetail';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: 'contact',
         element: <Contact />,
+      },
+      {
+        path: 'canvases/:id',
+        element: <CanvasDetail />,
       },
     ],
     errorElement: <ErrorPage />,
