@@ -30,6 +30,11 @@ export default function Home() {
     { id: 5, title: 'AI 플랫폼', lastDay: '2023-06-15', tag: 'IT' },
   ]);
 
+  const handleDeleteItem = function (id) {
+    const newItem = items.filter(item => item.id !== id);
+    setItems(newItem);
+  };
+
   const filteredData = items.filter(item =>
     item.title.toLowerCase().includes(searchText.toLowerCase()),
   );
@@ -44,6 +49,7 @@ export default function Home() {
         filteredData={filteredData}
         searchText={searchText}
         isGridView={isGridView}
+        onDeleteItem={handleDeleteItem}
       />
     </div>
   );
