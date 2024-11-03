@@ -23,7 +23,8 @@ function CanvasList({ filteredData, searchText, isGridView, onDeleteItem }) {
           lastDay={item.lastDay}
           tag={item.tag}
           onDelete={e => {
-            e.preventDefault();
+            e.preventDefault(); //기본동작을 막는 메서드
+            //e.stopPropagation(); //이벤트 전파를 막는 메서드
             onDeleteItem(item.id);
           }}
         />
