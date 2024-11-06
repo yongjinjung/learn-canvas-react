@@ -7,7 +7,7 @@ import ListType from '../components/ListType';
 import { getCanvases } from '../api/canvas';
 
 export default function Home() {
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState();
   const [isGridView, setIsGridView] = useState(true);
   const [data, setData] = useState([]);
 
@@ -17,22 +17,25 @@ export default function Home() {
     //   .catch(error => console.log(error));
 
     // const response = await axios.get('http://localhost:8000/canvases');
-    const response = await getCanvases();
+    const response = await getCanvases(params);
     setData(response.data);
   }
 
-  useEffect(function () {
-    fetchData();
-  }, []);
+  useEffect(
+    function () {
+      fetchData({ title_like: searchText });
+    },
+    [searchText],
+  );
 
   const handleDeleteItem = function (id) {
     const newItem = data.filter(item => item.id !== id);
     setData(newItem);
   };
 
-  const filteredData = data.filter(item =>
-    item.title.toLowerCase().includes(searchText.toLowerCase()),
-  );
+  // const filteredData = data.filter(item =>
+  //   item.title.toLowerCase().includes(searchText.toLowerCase()),
+  // );
 
   return (
     <div className="containe mx-auto px-4 py-16">
@@ -41,7 +44,7 @@ export default function Home() {
         <ListType isGridView={isGridView} setIsGridView={setIsGridView} />
       </div>
       <CanvasList
-        filteredData={filteredData}
+        filteredData={data}
         searchText={searchText}
         isGridView={isGridView}
         onDeleteItem={handleDeleteItem}
