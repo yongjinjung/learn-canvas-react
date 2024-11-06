@@ -1,7 +1,7 @@
 import CanvasItem from './CanvasItem';
 
 function CanvasList({ filteredData, searchText, isGridView, onDeleteItem }) {
-  if (filteredData === 0) {
+  if (filteredData.length === 0) {
     return (
       <div className="text-center py-10">
         <p className="text-xl text-gray-600">
