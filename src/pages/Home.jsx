@@ -1,8 +1,10 @@
 import { FaSearch, FaTh, FaList } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 import CanvasList from '../components/CanvasList';
 import SearchBar from '../components/SearchBar';
 import ListType from '../components/ListType';
+import { getCanvases } from '../api/canvas';
 
 export default function Home() {
   const [searchText, setSearchText] = useState('');
@@ -10,10 +12,13 @@ export default function Home() {
   const [data, setData] = useState([]);
 
   async function fetchData(params) {
-    const data = await fetch('http://localhost:8000/canvases')
-      .then(res => res.json())
-      .catch(error => console.log(error));
-    setData(data);
+    // const data = await fetch('http://localhost:8000/canvases')
+    //   .then(res => res.json())
+    //   .catch(error => console.log(error));
+
+    // const response = await axios.get('http://localhost:8000/canvases');
+    const response = await getCanvases();
+    setData(response.data);
   }
 
   useEffect(function () {
