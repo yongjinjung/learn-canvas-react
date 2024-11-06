@@ -23,7 +23,7 @@ export default function Header() {
   return (
     <header
       className="bg-gray-800 text-white px-4"
-      style={{ position: 'sticky', top: '0px' }}
+      style={{ position: 'sticky', top: '0px', zIndex: 1 }}
     >
       <div className="container mx-auto flex justify-between h-14 items-center">
         <div>
