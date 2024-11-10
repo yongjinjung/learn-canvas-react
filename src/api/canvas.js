@@ -26,3 +26,18 @@ export function createCanvas() {
 export function deleteCanvas(id) {
   return canvases.delete(`/${id}`);
 }
+
+export async function getCanvasById(id) {
+  const { data } = await canvases.get(`/${id}`);
+  return data;
+}
+
+export async function updateTitle(id, title) {
+  /**
+   * post - 새로운 자원 생성
+   * put - 기존 자원 전체 엉ㅂ데이트 또는 새 자원 생성
+   * patch - 일부 수정
+   */
+
+  return canvases.patch(`${id}`, { title });
+}
