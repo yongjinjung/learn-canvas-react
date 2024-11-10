@@ -4,7 +4,7 @@ import axios from 'axios';
 import CanvasList from '../components/CanvasList';
 import SearchBar from '../components/SearchBar';
 import ListType from '../components/ListType';
-import { getCanvases, createCanvas } from '../api/canvas';
+import { getCanvases, createCanvas, deleteCanvas } from '../api/canvas';
 import Loading from '../components/Loading';
 import Error from '../components/Error';
 import Button from '../components/Button';
@@ -43,9 +43,25 @@ export default function Home() {
     [searchText],
   );
 
-  const handleDeleteItem = function (id) {
-    const newItem = data.filter(item => item.id !== id);
-    setData(newItem);
+  // const handleDeleteItem = function (id) {
+  //   const newItem = data.filter(item => item.id !== id);
+  //   setData(newItem);
+  // };
+
+  const handleDeleteItem = async function (id) {
+    // setNotes(notes.filter(note => note.id !== id));
+
+    if (confirm('삭제 하시겠습니까?') === false) {
+      return;
+    }
+
+    try {
+      await deleteCanvas(id);
+      fetchData({ title_like: searchText });
+    } catch (err) {
+      alert(err.message);
+    } finally {
+    }
   };
 
   const [isLoadingCreate, setIsLoadingCreate] = useState(false);
