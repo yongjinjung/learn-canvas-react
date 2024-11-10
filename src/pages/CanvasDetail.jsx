@@ -30,9 +30,9 @@ function CanvasDetail(props) {
 
   return (
     <div>
-      {JSON.stringify(canvas)}
+      {JSON.stringify(canvas.problem?.notes)}
       <CanvasTitle title={canvas?.title} onChange={handleTitleChange} />
-      <LeanCanvas />
+      {canvas && <LeanCanvas canvas={canvas} />}
     </div>
   );
 }
