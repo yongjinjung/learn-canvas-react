@@ -4,9 +4,10 @@ import axios from 'axios';
 import CanvasList from '../components/CanvasList';
 import SearchBar from '../components/SearchBar';
 import ListType from '../components/ListType';
-import { getCanvases } from '../api/canvas';
+import { getCanvases, createCanvas } from '../api/canvas';
 import Loading from '../components/Loading';
 import Error from '../components/Error';
+import Button from '../components/Button';
 
 export default function Home() {
   const [searchText, setSearchText] = useState();
@@ -25,8 +26,8 @@ export default function Home() {
       setIsLoading(true);
       setError(null);
       await new Promise(resolve => setTimeout(resolve, 1000));
-      const canvasesPromise = getCanvases(params);
-      const response = await canvasesPromise;
+      //const canvasesPromise = getCanvases(params);
+      const response = await getCanvases(params);
       setData(response.data);
     } catch (err) {
       setError(err);
@@ -47,6 +48,20 @@ export default function Home() {
     setData(newItem);
   };
 
+  const [isLoadingCreate, setIsLoadingCreate] = useState(false);
+  const onHandleCreate = async () => {
+    try {
+      setIsLoadingCreate(true);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      await createCanvas();
+      fetchData({ title_like: searchText });
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setIsLoadingCreate(false);
+    }
+  };
+
   // const filteredData = data.filter(item =>
   //   item.title.toLowerCase().includes(searchText.toLowerCase()),
   // );
@@ -56,6 +71,11 @@ export default function Home() {
       <div className="mb-6 flex flex-col sm:flex-row data-center justify-between">
         <SearchBar searchText={searchText} setSearchText={setSearchText} />
         <ListType isGridView={isGridView} setIsGridView={setIsGridView} />
+      </div>
+      <div className="flex justify-end mb-6">
+        <Button loading={isLoadingCreate} onClick={onHandleCreate}>
+          등록하기
+        </Button>
       </div>
       {isLoading && <Loading />}
       {error && (
