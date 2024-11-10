@@ -3,9 +3,19 @@ import Note from './Note';
 import { useState } from 'react';
 
 function CanvasCard({ title, isSubtitle = false, notes = [], onNotesChange }) {
-  const handleAddNote = function (e) {};
+  const handleAddNote = function (e) {
+    const newNote = {
+      id: crypto.randomUUID(),
+      content: '',
+      color: '',
+    };
+    onNotesChange([...notes, newNote]);
+  };
 
-  const handleRemoveNote = function (id) {};
+  const handleRemoveNote = function (id) {
+    console.log('handleRemoveNote : ', id);
+    onNotesChange(notes?.filter(note => note.id !== id));
+  };
 
   const handleUpdateNote = function (id, content, color) {
     onNotesChange(

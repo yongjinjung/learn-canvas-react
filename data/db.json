@@ -32,19 +32,24 @@
       "problem": {
         "notes": [
           {
-            "id": "p1",
-            "content": "기존 스마트홈 시스템의 복잡성 수정\n\n",
-            "color": "bg-green-300"
-          },
-          {
-            "id": "p2",
-            "content": "높은 초기 설치 비용",
-            "color": "bg-pink-300"
-          },
-          {
             "id": "p3",
             "content": "다양한 기기 간 호환성 문제",
             "color": "bg-blue-300"
+          },
+          {
+            "id": "4d83dec3-1912-44a5-a71e-33b6ab55e9b4",
+            "content": "123",
+            "color": "bg-yellow-300"
+          },
+          {
+            "id": "7bc8ebff-431d-4605-895d-09eb7190d471",
+            "content": "dsfsdf",
+            "color": "bg-blue-300"
+          },
+          {
+            "id": "faa398b1-f61c-476e-93e0-9b52f45f3b24",
+            "content": "sdfdsf",
+            "color": "bg-yellow-300"
           }
         ]
       },
@@ -89,19 +94,9 @@
       "solution": {
         "notes": [
           {
-            "id": "s1",
-            "content": "AI 기반 자동화 시스템",
-            "color": "bg-yellow-300"
-          },
-          {
             "id": "s2",
             "content": "클라우드 기반 중앙 제어 시스템",
             "color": "bg-blue-300"
-          },
-          {
-            "id": "s3",
-            "content": "모듈식 설계로 쉬운 확장성",
-            "color": "bg-pink-300"
           }
         ]
       },

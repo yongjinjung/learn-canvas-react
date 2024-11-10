@@ -28,9 +28,11 @@ function CanvasDetail(props) {
     }
   };
 
-  const handleCanvasChange = updatedCanvas => {
+  const handleCanvasChange = async updatedCanvas => {
     try {
-      updateCanvas(id, updatedCanvas);
+      await updateCanvas(id, updatedCanvas);
+      const data = await getCanvasById(id);
+      setCanvas(data);
     } catch (err) {
       alert(err.message);
     }
