@@ -33,8 +33,8 @@
         "notes": [
           {
             "id": "p1",
-            "content": "기존 스마트홈 시스템의 복잡성",
-            "color": "bg-yellow-300"
+            "content": "기존 스마트홈 시스템의 복잡성 수정\n\n",
+            "color": "bg-green-300"
           },
           {
             "id": "p2",
@@ -229,6 +229,25 @@
             "id": "ea2",
             "content": "에너지 절약 열성 지지자",
             "color": "bg-pink-300"
+          }
+        ]
+      },
+      "proplem": {
+        "notes": [
+          {
+            "id": "p1",
+            "content": "bg-yellow-300",
+            "color": "기존 스마트홈 시스템의 복잡성 수정"
+          },
+          {
+            "id": "p2",
+            "content": "높은 초기 설치 비용",
+            "color": "bg-pink-300"
+          },
+          {
+            "id": "p3",
+            "content": "다양한 기기 간 호환성 문제",
+            "color": "bg-blue-300"
           }
         ]
       }

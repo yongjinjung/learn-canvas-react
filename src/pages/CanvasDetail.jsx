@@ -1,7 +1,7 @@
 import { useParams, useSearchParams, useLocation } from 'react-router-dom';
 import CanvasTitle from '../components/CanvasTitle';
 import LeanCanvas from '../components/LeanCanvas';
-import { getCanvasById, updateTitle } from '../api/canvas';
+import { getCanvasById, updateCanvas, updateTitle } from '../api/canvas';
 import { useState, useEffect } from 'react';
 
 function CanvasDetail(props) {
@@ -28,11 +28,21 @@ function CanvasDetail(props) {
     }
   };
 
+  const handleCanvasChange = updatedCanvas => {
+    try {
+      updateCanvas(id, updatedCanvas);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   return (
     <div>
       {JSON.stringify(canvas.problem?.notes)}
       <CanvasTitle title={canvas?.title} onChange={handleTitleChange} />
-      {canvas && <LeanCanvas canvas={canvas} />}
+      {canvas && (
+        <LeanCanvas canvas={canvas} onCanvasChange={handleCanvasChange} />
+      )}
     </div>
   );
 }

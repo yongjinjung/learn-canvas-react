@@ -1,7 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
 
-const Note = ({ id, content = '', color: initalColor, onRemoveNote }) => {
+const Note = ({
+  id,
+  content = '',
+  color: initalColor,
+  onRemoveNote,
+  onUpdateNote,
+}) => {
   const colorOptions = [
     'bg-yellow-300',
     'bg-pink-300',
@@ -24,10 +30,16 @@ const Note = ({ id, content = '', color: initalColor, onRemoveNote }) => {
   const [textareaContent, setTextareaContent] = useState(content);
   useEffect(() => {
     if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height =
         textareaRef.current.scrollHeight + 'px';
     }
   }, [textareaContent, content]);
+
+  const handleContentUpdate = () => {
+    setIsEditMode(false);
+    onUpdateNote(id, textareaContent, selectColor);
+  };
 
   return (
     <div
@@ -38,7 +50,7 @@ const Note = ({ id, content = '', color: initalColor, onRemoveNote }) => {
           <button
             aria-label="Close Note"
             className="text-gray-700"
-            onClick={() => setIsEditMode(false)}
+            onClick={handleContentUpdate}
           >
             <AiOutlineCheck size={20} />
           </button>
