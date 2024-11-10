@@ -1,18 +1,28 @@
 import { FaPlus } from 'react-icons/fa';
 import Note from './Note';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 
-function CanvasCard({ title, isSubtitle = false }) {
-  const [notes, setNotes] = useState([]);
-
+function CanvasCard({ title, isSubtitle = false, notes = [], onNotesChange }) {
   const handleAddNote = function (e) {
-    e.preventDefault();
-    const newId = crypto.randomUUID();
-    setNotes([...notes, { id: newId, content: '2' }]);
+    const newNote = {
+      id: crypto.randomUUID(),
+      content: '',
+      color: '',
+    };
+    onNotesChange([...notes, newNote]);
   };
 
   const handleRemoveNote = function (id) {
-    setNotes(notes.filter(note => note.id !== id));
+    console.log('handleRemoveNote : ', id);
+    onNotesChange(notes?.filter(note => note.id !== id));
+  };
+
+  const handleUpdateNote = function (id, content, color) {
+    onNotesChange(
+      notes?.map(note => {
+        return note.id === id ? { ...note, content, color } : note;
+      }),
+    );
   };
 
   return (
@@ -29,12 +39,14 @@ function CanvasCard({ title, isSubtitle = false }) {
         </button>
       </div>
       <div className="space-y-3 min-h-32 p-3">
-        {notes.map(note => (
+        {notes?.map(note => (
           <Note
             key={note.id}
             id={note.id}
             content={note.content}
+            color={note.color}
             onRemoveNote={handleRemoveNote}
+            onUpdateNote={handleUpdateNote}
           />
         ))}
       </div>

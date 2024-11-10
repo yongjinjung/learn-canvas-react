@@ -1,30 +1,45 @@
 import { useState, useRef, useEffect } from 'react';
 import { AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
 
-const Note = ({ id, content, onRemoveNote }) => {
+const Note = ({
+  id,
+  content = '',
+  color: initalColor,
+  onRemoveNote,
+  onUpdateNote,
+}) => {
   const colorOptions = [
     'bg-yellow-300',
     'bg-pink-300',
     'bg-blue-300',
     'bg-green-300',
   ];
-  const colorNumber = Math.floor(Math.random() * colorOptions.length);
 
   const [isEditMode, setIsEditMode] = useState(false);
-  const [selectColor, setselectColor] = useState(colorOptions[colorNumber]);
+  const [selectColor, setselectColor] = useState(() => {
+    if (initalColor) return initalColor;
+    const colorNumber = Math.floor(Math.random() * colorOptions.length);
+    return colorOptions[colorNumber];
+  });
 
   const handleColorChange = e => {
     setselectColor(e.target.dataset.color);
   };
 
   const textareaRef = useRef(null);
-  const [textareaContent, setTextareaContent] = useState('');
+  const [textareaContent, setTextareaContent] = useState(content);
   useEffect(() => {
     if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height =
         textareaRef.current.scrollHeight + 'px';
     }
-  }, [textareaContent]);
+  }, [textareaContent, content]);
+
+  const handleContentUpdate = () => {
+    setIsEditMode(false);
+    onUpdateNote(id, textareaContent, selectColor);
+  };
 
   return (
     <div
@@ -35,7 +50,7 @@ const Note = ({ id, content, onRemoveNote }) => {
           <button
             aria-label="Close Note"
             className="text-gray-700"
-            onClick={() => setIsEditMode(false)}
+            onClick={handleContentUpdate}
           >
             <AiOutlineCheck size={20} />
           </button>
@@ -43,7 +58,10 @@ const Note = ({ id, content, onRemoveNote }) => {
           <button
             aria-label="Close Note"
             className="text-gray-700"
-            onClick={() => onRemoveNote(id)}
+            onClick={e => {
+              e.stopPropagation();
+              onRemoveNote(id);
+            }}
           >
             <AiOutlineClose size={20} />
           </button>
@@ -59,6 +77,7 @@ const Note = ({ id, content, onRemoveNote }) => {
           setIsEditMode(true);
           setTextareaContent(e.target.value);
         }}
+        value={textareaContent}
       />
       {isEditMode && (
         <div className="flex space-x-1.5">

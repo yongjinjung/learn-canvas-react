@@ -4,12 +4,17 @@ import axios from 'axios';
 import CanvasList from '../components/CanvasList';
 import SearchBar from '../components/SearchBar';
 import ListType from '../components/ListType';
-import { getCanvases } from '../api/canvas';
+import { getCanvases, createCanvas, deleteCanvas } from '../api/canvas';
+import Loading from '../components/Loading';
+import Error from '../components/Error';
+import Button from '../components/Button';
 
 export default function Home() {
   const [searchText, setSearchText] = useState();
   const [isGridView, setIsGridView] = useState(true);
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   async function fetchData(params) {
     // const data = await fetch('http://localhost:8000/canvases')
@@ -17,8 +22,18 @@ export default function Home() {
     //   .catch(error => console.log(error));
 
     // const response = await axios.get('http://localhost:8000/canvases');
-    const response = await getCanvases(params);
-    setData(response.data);
+    try {
+      setIsLoading(true);
+      setError(null);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      //const canvasesPromise = getCanvases(params);
+      const response = await getCanvases(params);
+      setData(response.data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   useEffect(
@@ -28,9 +43,39 @@ export default function Home() {
     [searchText],
   );
 
-  const handleDeleteItem = function (id) {
-    const newItem = data.filter(item => item.id !== id);
-    setData(newItem);
+  // const handleDeleteItem = function (id) {
+  //   const newItem = data.filter(item => item.id !== id);
+  //   setData(newItem);
+  // };
+
+  const handleDeleteItem = async function (id) {
+    // setNotes(notes.filter(note => note.id !== id));
+
+    if (confirm('삭제 하시겠습니까?') === false) {
+      return;
+    }
+
+    try {
+      await deleteCanvas(id);
+      fetchData({ title_like: searchText });
+    } catch (err) {
+      alert(err.message);
+    } finally {
+    }
+  };
+
+  const [isLoadingCreate, setIsLoadingCreate] = useState(false);
+  const onHandleCreate = async () => {
+    try {
+      setIsLoadingCreate(true);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      await createCanvas();
+      fetchData({ title_like: searchText });
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setIsLoadingCreate(false);
+    }
   };
 
   // const filteredData = data.filter(item =>
@@ -38,17 +83,31 @@ export default function Home() {
   // );
 
   return (
-    <div className="containe mx-auto px-4 py-16">
+    <>
       <div className="mb-6 flex flex-col sm:flex-row data-center justify-between">
         <SearchBar searchText={searchText} setSearchText={setSearchText} />
         <ListType isGridView={isGridView} setIsGridView={setIsGridView} />
       </div>
-      <CanvasList
-        filteredData={data}
-        searchText={searchText}
-        isGridView={isGridView}
-        onDeleteItem={handleDeleteItem}
-      />
-    </div>
+      <div className="flex justify-end mb-6">
+        <Button loading={isLoadingCreate} onClick={onHandleCreate}>
+          등록하기
+        </Button>
+      </div>
+      {isLoading && <Loading />}
+      {error && (
+        <Error
+          errMsg={error.message}
+          onRetry={() => fetchData({ title_like: searchText })}
+        />
+      )}
+      {!isLoading && !error && (
+        <CanvasList
+          filteredData={data}
+          searchText={searchText}
+          isGridView={isGridView}
+          onDeleteItem={handleDeleteItem}
+        />
+      )}
+    </>
   );
 }
