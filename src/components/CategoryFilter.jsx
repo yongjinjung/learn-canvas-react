@@ -1,5 +1,5 @@
 function CategoryFilter({ category, onChange }) {
-  const categories = ['신규', '셀스케어', '물류', '여행'];
+  const categories = ['신규', '헬스케어', '물류', '여행'];
   return (
     <select
       className="border p-2 rounded-lg w-full sm:w-32"

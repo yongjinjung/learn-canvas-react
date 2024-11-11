@@ -29,9 +29,16 @@ export default function Home() {
   // 1] 데이터 조회
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['canvases', filter.searchText, filter.category],
-    queryFn: () =>
-      getCanvases({ title_like: filter.searchText, tag: filter.category }),
-    initialData: [],
+    queryFn: () => {
+      console.log('fetching data');
+      return getCanvases({
+        title_like: filter.searchText,
+        tag: filter.category,
+      });
+    },
+    // initialData: [],
+    //staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
   });
 
   // 2] 등록
