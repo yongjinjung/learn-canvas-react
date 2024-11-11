@@ -13,5 +13,10 @@ function create(baseURL, options) {
   return instance;
 }
 
-export const canvases = create('http://localhost:8000/canvases/');
-export const posts = create('http://localhost:8000/posts/');
+// export const canvases = create(
+//   'https://json-server-vercel-sandy-sigma.vercel.app/canvases/',
+// );
+export const canvases = create(
+  import.meta.env.VITE_API_BASE_URL + '/canvases/',
+);
+// export const posts = create('http://localhost:8000/posts/');
