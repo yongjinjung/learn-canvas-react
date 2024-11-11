@@ -9,81 +9,43 @@ import Loading from '../components/Loading';
 import Error from '../components/Error';
 import Button from '../components/Button';
 import useApiRequest from '../hooks/useApiRequest';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export default function Home() {
   const [searchText, setSearchText] = useState();
   const [isGridView, setIsGridView] = useState(true);
-  const [data, setData] = useState([]);
 
-  const { isLoading, error, excute: fetchData } = useApiRequest(getCanvases);
-  const { isLoading: isLoadingCreate, excute: createNewCanvas } =
-    useApiRequest(createCanvas);
-  const { excute: delCanvas } = useApiRequest(deleteCanvas);
-  useEffect(
-    function () {
-      fetchData(
-        { title_like: searchText },
-        {
-          onSuccess: response => setData(response.data),
-          onError: err => alert(err.message),
-        },
-      );
-    },
-    [searchText, fetchData],
-  );
+  const queryClient = useQueryClient();
+  // 1] 데이터 조회
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ['canvases', searchText],
+    queryFn: () => getCanvases({ title_like: searchText }),
+    initialData: [],
+  });
 
-  // const handleDeleteItem = function (id) {
-  //   const newItem = data.filter(item => item.id !== id);
-  //   setData(newItem);
-  // };
+  // 2] 등록
+  const { mutate: createNewCanvas, isLoading: isLoadingCreate } = useMutation({
+    mutationFn: createCanvas,
+    onSuccess: () => queryClient.invalidateQueries(['canvases']),
+    onError: err => alert(err.message),
+  });
+
+  // 3] 삭제
+  const { mutate: delCanvas } = useMutation({
+    mutationFn: deleteCanvas,
+    onSuccess: () => queryClient.invalidateQueries(['canvases']),
+  });
 
   const handleDeleteItem = async function (id) {
-    // setNotes(notes.filter(note => note.id !== id));
-
     if (confirm('삭제 하시겠습니까?') === false) {
       return;
     }
-    delCanvas(id, {
-      onSuccess: response =>
-        fetchData(
-          { title_like: searchText },
-          {
-            onSuccess: response => setData(response.data),
-            onError: err => alert(err.message),
-          },
-        ),
-      onError: err => alert(err.message),
-    });
+    delCanvas(id);
   };
 
   const onHandleCreate = async () => {
-    createNewCanvas(null, {
-      onSuccess: response =>
-        fetchData(
-          { title_like: searchText },
-          {
-            onSuccess: response => setData(response.data),
-            onError: err => alert(err.message),
-          },
-        ),
-      onError: err => alert(err.message),
-    });
-
-    // try {
-    //   setIsLoadingCreate(true);
-    //   await new Promise(resolve => setTimeout(resolve, 1000));
-    //   await createCanvas();
-    //   fetchData({ title_like: searchText });
-    // } catch (err) {
-    //   alert(err.message);
-    // } finally {
-    //   setIsLoadingCreate(false);
-    // }
+    createNewCanvas();
   };
-
-  // const filteredData = data.filter(item =>
-  //   item.title.toLowerCase().includes(searchText.toLowerCase()),
-  // );
 
   return (
     <>
