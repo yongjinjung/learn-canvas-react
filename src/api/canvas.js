@@ -1,7 +1,7 @@
 import { canvases } from './http';
 import dayjs from 'dayjs';
 
-export function getCanvases(params) {
+export async function getCanvases(params) {
   const pyload = Object.assign(
     {
       _sort: 'lastDay',
@@ -9,7 +9,8 @@ export function getCanvases(params) {
     },
     params,
   );
-  return canvases.get('/', { params: pyload });
+  const { data } = await canvases.get('/', { params: pyload });
+  return data;
 }
 
 export function createCanvas() {
