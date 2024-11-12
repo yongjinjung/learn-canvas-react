@@ -1,0 +1,31 @@
+.header-container {
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  background-color: slateblue;
+  align-items: center;
+}
+
+.nav-item {
+  height: 100%;
+  padding: 15px;
+}
+
+.nav-item:hover {
+  cursor: pointer;
+  background-color: hotpink;
+}
+
+.btn {
+  border: 1px solid #fefefe;
+  border-radius: 5px;
+  padding: 8px;
+  margin-right: 5px;
+  background-color: aliceblue;
+  color: lightslategray;
+}
+
+.btn:hover {
+  background-color: darkgray;
+}
